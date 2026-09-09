@@ -1,24 +1,24 @@
-import { Mail } from "lucide-react";
+import { Mail } from "pixelarticons/react";
 import { SectionHeading } from "./SectionHeading";
 import { SocialLinks } from "./SocialLinks";
 import { site } from "@/data/site";
 
 export function Contact() {
   return (
-    <section className="mx-auto w-full max-w-5xl px-6 py-24">
-      <SectionHeading label="contact" title="get_in_touch()" id="contact" />
+    <section className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-10">
+      <SectionHeading label="contact" title="Contact" id="contact" />
 
-      <div className="mt-10 rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-8 text-center sm:p-12">
+      <div className="pixel-border pixel-shadow mt-10 bg-[color:var(--color-surface)] p-8 text-center sm:p-16">
         <p className="mx-auto max-w-xl text-base leading-relaxed text-[color:var(--color-muted)]">
-          Open to internships, new-grad roles, collaborations, and interesting
-          conversations. The fastest way to reach me is email.
+          Open to internship opportunities, research collaborations, and
+          student-org partnerships. Email is the fastest way to reach me.
         </p>
 
         <a
           href={`mailto:${site.email}`}
-          className="mt-8 inline-flex items-center gap-2 rounded-md bg-[color:var(--color-accent)] px-6 py-3 font-mono text-sm font-medium text-[color:var(--color-bg)] transition-colors hover:bg-[color:var(--color-accent-2)]"
+          className="pixel-border pixel-shadow-hover pixel-press mt-8 inline-flex items-center gap-2 bg-[color:var(--nes-light-green)] px-6 py-2 font-mono text-sm font-bold text-[color:var(--nes-black)] transition-none"
         >
-          <Mail size={16} />
+          <Mail width={16} height={16} />
           {site.email}
         </a>
 

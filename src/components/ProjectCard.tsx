@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink } from "pixelarticons/react";
 import type { Project } from "@/data/projects";
 
 function GithubIcon({ size = 18 }: { size?: number }) {
@@ -18,19 +18,19 @@ function GithubIcon({ size = 18 }: { size?: number }) {
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <article className="group flex flex-col rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6 transition-colors hover:border-[color:var(--color-accent)]/60">
+    <article className="pixel-border pixel-shadow-hover group flex flex-col border-t-4 border-t-[color:var(--nes-light-green)] bg-[color:var(--color-surface)] p-6 transition-none">
       <div className="flex items-start justify-between gap-4">
         <h3 className="font-mono text-lg font-semibold text-[color:var(--color-fg)]">
           {project.title}
         </h3>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-4 shrink-0">
           {project.github && (
             <a
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${project.title} on GitHub`}
-              className="text-[color:var(--color-muted)] hover:text-[color:var(--color-accent)]"
+              className="text-[color:var(--color-muted)] transition-none hover:text-[color:var(--color-accent)]"
             >
               <GithubIcon size={18} />
             </a>
@@ -41,15 +41,15 @@ export function ProjectCard({ project }: { project: Project }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${project.title} live demo`}
-              className="text-[color:var(--color-muted)] hover:text-[color:var(--color-accent)]"
+              className="text-[color:var(--color-muted)] transition-none hover:text-[color:var(--color-accent)]"
             >
-              <ExternalLink size={18} strokeWidth={1.5} />
+              <ExternalLink width={18} height={18} />
             </a>
           )}
         </div>
       </div>
 
-      <p className="mt-3 flex-1 text-sm leading-relaxed text-[color:var(--color-muted)]">
+      <p className="mt-4 flex-1 text-sm leading-relaxed text-[color:var(--color-muted)]">
         {project.description}
       </p>
 
@@ -57,7 +57,7 @@ export function ProjectCard({ project }: { project: Project }) {
         {project.tech.map((t) => (
           <li
             key={t}
-            className="rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface-2)] px-2.5 py-0.5 font-mono text-xs text-[color:var(--color-muted)]"
+            className="border-2 border-[color:var(--color-border)] bg-[color:var(--color-surface-2)] px-2 py-1 font-mono text-xs text-[color:var(--color-muted)]"
           >
             {t}
           </li>

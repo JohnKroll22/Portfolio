@@ -1,10 +1,14 @@
-import { Mail } from "lucide-react";
+import { Mail as PixelMail } from "pixelarticons/react";
 import { site } from "@/data/site";
 
 type Props = {
   className?: string;
   iconSize?: number;
 };
+
+function MailIcon({ size = 20 }: { size?: number }) {
+  return <PixelMail width={size} height={size} aria-hidden="true" />;
+}
 
 function GithubIcon({ size = 20 }: { size?: number }) {
   return (
@@ -56,8 +60,8 @@ export function SocialLinks({ className = "", iconSize = 20 }: Props) {
     { href: site.socials.github, label: "GitHub", Icon: GithubIcon },
     { href: site.socials.linkedin, label: "LinkedIn", Icon: LinkedinIcon },
     { href: site.socials.twitter, label: "Twitter", Icon: TwitterIcon },
-    { href: `mailto:${site.email}`, label: "Email", Icon: Mail },
-  ] as const;
+    { href: `mailto:${site.email}`, label: "Email", Icon: MailIcon },
+  ].filter((l) => l.href && l.href !== "mailto:");
 
   return (
     <div className={`flex items-center gap-4 ${className}`}>

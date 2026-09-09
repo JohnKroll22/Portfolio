@@ -4,14 +4,13 @@ import { skills } from "@/data/skills";
 
 export function Skills() {
   return (
-    <section className="mx-auto w-full max-w-5xl px-6 py-24">
-      <SectionHeading label="skills" title="tech_stack" id="skills" />
+    <section className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-10">
+      <SectionHeading label="skills" title="Skills" id="skills" />
 
       <div className="mt-10 space-y-8">
         {skills.map((group) => (
           <div key={group.category}>
-            <h3 className="font-mono text-sm text-[color:var(--color-accent-2)]">
-              <span aria-hidden="true"># </span>
+            <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-[color:var(--color-accent-2)]">
               {group.category}
             </h3>
             <div className="mt-3 flex flex-wrap gap-2">

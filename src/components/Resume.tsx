@@ -1,48 +1,39 @@
-import { Download, FileText } from "lucide-react";
+import { Download, ExternalLink } from "pixelarticons/react";
 import { SectionHeading } from "./SectionHeading";
+import { ResumeViewer } from "./ResumeViewer";
 import { site } from "@/data/site";
 
 export function Resume() {
   return (
-    <section className="mx-auto w-full max-w-5xl px-6 py-24">
-      <SectionHeading label="resume" title="cat resume.pdf" id="resume" />
+    <section className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-10">
+      <SectionHeading label="resume" title="Resume" id="resume" />
 
-      <div className="mt-10 flex flex-col gap-6 rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-8 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-start gap-4">
-          <FileText
-            size={32}
-            className="text-[color:var(--color-accent)]"
-            strokeWidth={1.5}
-          />
-          <div>
-            <h3 className="font-mono text-lg font-semibold text-[color:var(--color-fg)]">
-              resume.pdf
-            </h3>
-            <p className="mt-1 text-sm text-[color:var(--color-muted)]">
-              Latest version — updated {new Date().getFullYear()}. Includes
-              experience, projects, education, and skills.
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-3">
+      <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-mono text-sm text-[color:var(--color-muted)]">
+          Education, leadership, research, and work experience.
+        </p>
+        <div className="flex flex-wrap gap-4">
           <a
             href={site.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--color-border)] px-4 py-2 font-mono text-sm text-[color:var(--color-fg)] transition-colors hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)]"
+            className="pixel-border pixel-shadow-hover pixel-press inline-flex items-center gap-2 px-4 py-2 font-mono text-sm font-bold text-[color:var(--color-fg)] transition-none hover:text-[color:var(--color-accent)]"
           >
-            view
+            <ExternalLink width={16} height={16} />
+            Open in new tab
           </a>
           <a
             href={site.resumeUrl}
             download
-            className="inline-flex items-center gap-2 rounded-md bg-[color:var(--color-accent)] px-4 py-2 font-mono text-sm font-medium text-[color:var(--color-bg)] transition-colors hover:bg-[color:var(--color-accent-2)]"
+            className="pixel-border pixel-shadow-hover pixel-press inline-flex items-center gap-2 bg-[color:var(--nes-light-green)] px-4 py-2 font-mono text-sm font-bold text-[color:var(--nes-black)] transition-none"
           >
-            <Download size={16} />
-            download
+            <Download width={16} height={16} />
+            Download
           </a>
         </div>
       </div>
+
+      <ResumeViewer file={site.resumeUrl} />
     </section>
   );
 }

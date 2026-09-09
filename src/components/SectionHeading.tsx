@@ -1,20 +1,19 @@
 type Props = {
   label: string;
   title: string;
-  id: string;
+  id?: string;
 };
 
 export function SectionHeading({ label, title, id }: Props) {
   return (
-    <div id={id} className="scroll-mt-20">
-      <p className="font-mono text-sm text-[color:var(--color-accent)]">
-        <span aria-hidden="true">## </span>
+    <div id={id} className="pixel-fade scroll-mt-20 text-center">
+      <p className="font-mono text-xs uppercase tracking-[0.25em] text-[color:var(--color-muted)]">
         {label}
       </p>
-      <h2 className="mt-2 font-mono text-3xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-4xl">
+      <h1 className="font-pixel mt-4 text-5xl leading-none tracking-wide text-[color:var(--color-fg)] sm:text-6xl md:text-7xl">
         {title}
-      </h2>
-      <div className="mt-4 h-px w-16 bg-[color:var(--color-accent)]/60" />
+      </h1>
+      <div className="mx-auto mt-4 h-[3px] w-16 bg-[color:var(--color-accent)]" />
     </div>
   );
 }

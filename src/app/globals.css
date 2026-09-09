@@ -1,15 +1,53 @@
+/* =========================================================================
+   NES 2C02 PPU-inspired palette + 8px grid design tokens
+   -------------------------------------------------------------------------
+   Phase 1 foundation for the pixel/retro design system. The `--nes-*` tokens
+   are the raw palette (loosely based on the NES 2C02 PPU / PICO-8 palette);
+   the `--color-*` tokens remap those raw colors onto the semantic names the
+   rest of the site already consumes, so no components need to change.
+   -------------------------------------------------------------------------
+   Tailwind v4: tokens live inside `@theme inline { ... }` (no JS config).
+   ========================================================================= */
+
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #09090b;
-  --color-surface: #18181b;
-  --color-surface-2: #27272a;
-  --color-border: #3f3f46;
-  --color-muted: #a1a1aa;
-  --color-fg: #e4e4e7;
-  --color-accent: #4ade80;
-  --color-accent-2: #22d3ee;
+  /* --- Raw NES palette ---------------------------------------------------- */
+  --nes-black: #000000;
+  --nes-dark: #1d2b53;
+  --nes-dark-2: #2a3a6d;
+  --nes-purple: #7e2553;
+  --nes-green: #008751;
+  --nes-brown: #ab5236;
+  --nes-dark-gray: #5f574f;
+  --nes-light-gray: #c2c3c7;
+  --nes-white: #fff1e8;
+  --nes-red: #ff004d;
+  --nes-orange: #ffa300;
+  --nes-yellow: #ffec27;
+  --nes-light-green: #00e436;
+  --nes-blue: #29adff;
+  --nes-lavender: #83769c;
+  --nes-pink: #ff77a8;
+  --nes-peach: #ffccaa;
 
+  /* --- Semantic tokens (map raw palette to existing usage) ---------------- */
+  --color-bg: var(--nes-black);
+  --color-surface: var(--nes-dark);
+  --color-surface-2: var(--nes-dark-2);
+  --color-border: var(--nes-lavender);
+  --color-muted: var(--nes-light-gray);
+  --color-fg: var(--nes-white);
+  --color-accent: var(--nes-light-green);
+  --color-accent-2: var(--nes-blue);
+
+  /* --- 8px grid spacing scale -------------------------------------------- */
+  --grid: 8px;
+  --grid-2: 16px;
+  --grid-3: 24px;
+  --grid-4: 32px;
+
+  /* --- Font families (unchanged) ----------------------------------------- */
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
 }
@@ -30,7 +68,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-accent) 30%, transparent);
+  background: color-mix(in oklab, var(--nes-light-green) 40%, var(--nes-black));
   color: var(--color-fg);
 }
 
@@ -50,12 +88,13 @@ body {
   animation: blink 1s step-end infinite;
 }
 
-/* Subtle gradient utility for hero accent */
+/* Subtle gradient utility for hero accent
+   (light-green -> blue, matching --color-accent / --color-accent-2). */
 .text-gradient {
   background: linear-gradient(
     90deg,
-    var(--color-accent) 0%,
-    var(--color-accent-2) 100%
+    var(--nes-light-green) 0%,
+    var(--nes-blue) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -66,4 +105,653 @@ body {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+}
+
+/* Pixel/robotic display type — used for section headers */
+.font-pixel {
+  font-family: var(--font-pixel), "Courier New", monospace;
+}
+
+.pixel-glow {
+  text-shadow:
+    0 0 8px color-mix(in oklab, var(--color-accent) 30%, transparent),
+    0 0 24px color-mix(in oklab, var(--color-accent) 12%, transparent);
+}
+
+/* =========================================================================
+   Retro / pixel utility classes (Phase 2 will apply these to components)
+   ========================================================================= */
+
+/* 2px hard border in foreground color, no rounding. */
+.pixel-border {
+  border: 2px solid var(--color-fg);
+  border-radius: 0;
+}
+
+/* 2px hard border in accent color, no rounding. */
+.pixel-border-accent {
+  border: 2px solid var(--color-accent);
+  border-radius: 0;
+}
+
+/* Hard, blur-less drop shadow — the signature "sticker" retro look. */
+.pixel-shadow {
+  box-shadow: 4px 4px 0 0 var(--color-fg);
+}
+
+.pixel-shadow-accent {
+  box-shadow: 4px 4px 0 0 var(--color-accent);
+}
+
+/* Hover variant: element nudges up/left 2px and the shadow doubles.
+   Snapping — no easing, no smooth transition. */
+.pixel-shadow-hover {
+  box-shadow: 4px 4px 0 0 var(--color-fg);
+  transition-duration: 0s;
+}
+
+.pixel-shadow-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 0 var(--color-fg);
+  transition-duration: 0s;
+}
+
+/* Accent-colored hover variant. */
+.pixel-shadow-accent-hover {
+  box-shadow: 4px 4px 0 0 var(--color-accent);
+  transition-duration: 0s;
+}
+
+.pixel-shadow-accent-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 0 var(--color-accent);
+  transition-duration: 0s;
+}
+
+/* Force sharp corners regardless of Tailwind `rounded-*` classes. */
+.no-radius {
+  border-radius: 0 !important;
+}
+
+/* Preserve pixel edges when scaling raster art / small SVGs. */
+.crisp-edges {
+  image-rendering: pixelated;
+}
+
+/* =========================================================================
+   Phase 5: Retro micro-interactions
+   ========================================================================= */
+
+/* Press-down tactile feedback. On :active, snaps 2px down-right and drops
+   the hard shadow, giving the button a satisfying "clunk". Pure instant
+   snap — no easing. Combines with .pixel-shadow / .pixel-shadow-hover. */
+.pixel-press {
+  transition: transform 0s, box-shadow 0s;
+}
+
+.pixel-press:active {
+  transform: translate(2px, 2px);
+  box-shadow: none !important;
+}
+
+/* Short pixelated jiggle on hover — 4-step shift on the x-axis so it
+   feels 8-bit rather than smooth. */
+@keyframes pixel-jiggle {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-1px);
+  }
+  50% {
+    transform: translateX(1px);
+  }
+  75% {
+    transform: translateX(-1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.pixel-jiggle:hover {
+  animation: pixel-jiggle 200ms steps(4) 1;
+}
+
+/* CRT-style horizontal scanline overlay. Define only — apply per-surface. */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.03) 0,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Sharp pixel-style focus ring — hard yellow outline, no radius. */
+*:focus-visible {
+  outline: 2px solid var(--nes-yellow);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--nes-yellow);
+  outline-offset: 2px;
+}
+
+/* Stepped page/section arrival: fade + short slide-up in 6 discrete
+   frames — reads as chunky, not smooth. */
+@keyframes pixel-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pixel-fade {
+  animation: pixel-fade-in 240ms steps(6) 1;
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .pixel-jiggle:hover,
+  .pixel-fade,
+  .cursor-blink {
+    animation: none !important;
+  }
+  .pixel-press:active {
+    transform: none !important;
+  }
+}
+
+/* =========================================================================
+   NES-style window boot-up sequence
+   -------------------------------------------------------------------------
+   Mimics a CRT / retro console powering on:
+     1. Window pops in as a thin horizontal scanline (like a CRT firing up)
+     2. Expands vertically in chunky steps
+     3. Overshoots slightly then jiggles into place
+     4. White flash overlay pulses during the sequence
+   ========================================================================= */
+
+@keyframes nes-boot-scale {
+  0% {
+    opacity: 0;
+    transform: scaleX(0) scaleY(0.02);
+    filter: brightness(3) contrast(1.5);
+  }
+  8% {
+    opacity: 1;
+    transform: scaleX(0.15) scaleY(0.02);
+  }
+  22% {
+    opacity: 1;
+    transform: scaleX(1.05) scaleY(0.02);
+    filter: brightness(3) contrast(1.5);
+  }
+  30% {
+    transform: scaleX(1.05) scaleY(0.02);
+  }
+  55% {
+    transform: scaleX(1.05) scaleY(1.08);
+    filter: brightness(1.8);
+  }
+  68% {
+    transform: scaleX(0.98) scaleY(0.96);
+    filter: brightness(1);
+  }
+  78% {
+    transform: scaleX(1.02) scaleY(1.02);
+  }
+  86% {
+    transform: translateX(-3px) scale(1);
+  }
+  92% {
+    transform: translateX(3px) scale(1);
+  }
+  96% {
+    transform: translateX(-1px) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes nes-flash {
+  0%,
+  20% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.9;
+  }
+  30% {
+    opacity: 0;
+  }
+  55% {
+    opacity: 0.6;
+  }
+  62% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes nes-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.nes-boot {
+  transform-origin: center center;
+  animation: nes-boot-scale 1100ms steps(22, jump-both) 1 both;
+  will-change: transform, opacity, filter;
+}
+
+.nes-flash {
+  animation: nes-flash 1100ms steps(14) 1 both;
+}
+
+.nes-backdrop {
+  animation: nes-backdrop-in 200ms steps(4) 1 both;
+}
+
+/* =========================================================================
+   Per-button game-style entrance animations
+   ========================================================================= */
+
+/* --- Terminal typewriter reveal (GitHub) ---------------------------------
+   Window materializes row-by-row from top to bottom, like a text-mode boot.
+   Uses clip-path so the shape is preserved (no stretching). */
+@keyframes nes-terminal {
+  0% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    filter: brightness(2) hue-rotate(20deg);
+  }
+  10% {
+    opacity: 1;
+    clip-path: inset(0 0 96% 0);
+  }
+  30% {
+    clip-path: inset(0 0 70% 0);
+    filter: brightness(1.8);
+  }
+  55% {
+    clip-path: inset(0 0 40% 0);
+  }
+  80% {
+    clip-path: inset(0 0 5% 0);
+    filter: brightness(1.2);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    filter: brightness(1);
+  }
+}
+
+.nes-terminal {
+  animation: nes-terminal 950ms steps(20, jump-both) 1 both;
+  will-change: clip-path, opacity, filter;
+}
+
+/* --- Mario warp-pipe (LinkedIn) -----------------------------------------
+   Rockets up from below the viewport, overshoots, squash-stretches, settles. */
+@keyframes nes-warp {
+  0% {
+    opacity: 0;
+    transform: translateY(120vh) scaleY(0.6) scaleX(1.1);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(0) scaleY(0.6) scaleX(1.1);
+  }
+  50% {
+    transform: translateY(-40px) scaleY(1.25) scaleX(0.85);
+  }
+  65% {
+    transform: translateY(12px) scaleY(0.85) scaleX(1.1);
+  }
+  78% {
+    transform: translateY(-6px) scaleY(1.06) scaleX(0.96);
+  }
+  88% {
+    transform: translateY(3px) scaleY(0.98) scaleX(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.nes-warp {
+  transform-origin: center bottom;
+  animation: nes-warp 1100ms steps(24, jump-both) 1 both;
+  will-change: transform, opacity;
+}
+
+/* --- Zelda item-get (Resume) --------------------------------------------
+   Spins in from tiny with a golden glow — like getting a heart container. */
+@keyframes nes-item-get {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-540deg);
+    filter: brightness(4) drop-shadow(0 0 20px var(--nes-yellow))
+      drop-shadow(0 0 40px var(--nes-orange));
+  }
+  25% {
+    opacity: 1;
+    transform: scale(0.4) rotate(-270deg);
+    filter: brightness(3) drop-shadow(0 0 16px var(--nes-yellow))
+      drop-shadow(0 0 32px var(--nes-orange));
+  }
+  55% {
+    transform: scale(1.15) rotate(-30deg);
+    filter: brightness(2) drop-shadow(0 0 10px var(--nes-yellow));
+  }
+  70% {
+    transform: scale(0.92) rotate(10deg);
+    filter: brightness(1.4);
+  }
+  82% {
+    transform: scale(1.04) rotate(-4deg);
+  }
+  92% {
+    transform: scale(0.98) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+    filter: brightness(1);
+  }
+}
+
+.nes-item-get {
+  transform-origin: center center;
+  animation: nes-item-get 1200ms steps(24, jump-both) 1 both;
+  will-change: transform, opacity, filter;
+}
+
+/* --- Pixel assemble (Resume) ---------------------------------------------
+   Window fades in behind a grid of scattered pixels that fly into their
+   final positions. Each cell has its own randomized delay + start offset
+   via CSS custom properties set from JS. */
+@keyframes nes-pixel-window-in {
+  0%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.nes-pixel-assemble {
+  animation: nes-pixel-window-in 2200ms steps(44) 1 both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nes-boot,
+  .nes-flash,
+  .nes-backdrop,
+  .nes-terminal,
+  .nes-warp,
+  .nes-item-get,
+  .nes-pixel-assemble {
+    animation: none !important;
+  }
+}
+
+/* =========================================================================
+   Super Mario Bros. 1-1 hero scene (pure CSS pixel art)
+   -------------------------------------------------------------------------
+   A self-contained, `mario-*`-namespaced backdrop used ONLY by the Hero.
+   Sky-blue gradient + box-shadow pixel clouds + green hills + brick ground.
+   Nothing here touches the site's dark NES theme.
+   ========================================================================= */
+
+/* The sky. Classic SMB blue, very slightly lighter toward the horizon. */
+.mario-scene {
+  background: linear-gradient(180deg, #5c94fc 0%, #6ba0fc 70%, #78a8fc 100%);
+}
+
+/* --- Clouds --------------------------------------------------------------
+   Each cloud is a single element whose lumps are drawn with box-shadow.
+   The element itself is one 24px "pixel". `--cloud-scale` lets each cloud
+   be sized independently; `image-rendering: pixelated` keeps edges hard. */
+.mario-cloud {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  transform: scale(var(--cloud-scale, 1));
+  transform-origin: top left;
+  /* White cloud body (top row of lumps) + darker blue underline (bottom row)
+     to match the two-tone SMB cloud. Units are the 24px cell. */
+  background: #fff;
+  box-shadow:
+    /* top puffs */
+    24px -12px 0 0 #fff,
+    48px -12px 0 0 #fff,
+    24px 0 0 0 #fff,
+    48px 0 0 0 #fff,
+    0 0 0 0 #fff,
+    72px 0 0 0 #fff,
+    /* darker blue shading strip along the bottom */
+    0 24px 0 0 #b8d8fc,
+    24px 24px 0 0 #b8d8fc,
+    48px 24px 0 0 #b8d8fc,
+    72px 24px 0 0 #b8d8fc;
+  image-rendering: pixelated;
+}
+
+/* --- Hills ---------------------------------------------------------------
+   A green mound: rounded top via a big top border-radius, flat bottom. */
+.mario-hill {
+  position: absolute;
+  bottom: 60px; /* sits on top of the ground strip */
+  width: 220px;
+  height: 110px;
+  background: #00a800;
+  border-radius: 110px 110px 0 0;
+  /* subtle darker rim on the left to hint at SMB shading */
+  box-shadow: inset 6px 0 0 0 #008000;
+}
+
+.mario-hill--sm {
+  width: 150px;
+  height: 70px;
+  border-radius: 75px 75px 0 0;
+  bottom: 60px;
+}
+
+/* --- Ground --------------------------------------------------------------
+   Brick strip pinned to the bottom. One repeating gradient draws the mortar
+   grid; offset rows are achieved with a second layer for the brick offset. */
+.mario-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 60px;
+  background-color: #c84c0c;
+  background-image:
+    /* horizontal mortar lines */
+    linear-gradient(0deg, rgba(0, 0, 0, 0.55) 2px, transparent 2px),
+    /* vertical mortar lines */
+    linear-gradient(90deg, rgba(0, 0, 0, 0.55) 2px, transparent 2px),
+    /* top highlight on each brick */
+    linear-gradient(180deg, #e45c10 3px, transparent 3px);
+  background-size:
+    30px 30px,
+    30px 30px,
+    30px 30px;
+  image-rendering: pixelated;
+}
+
+/* --- Cloud drift ---------------------------------------------------------
+   Slow, ambient, stepped (8-bit) horizontal drift. Each cloud wraps by
+   translating a full viewport width. */
+@keyframes mario-cloud-drift {
+  from {
+    transform: translateX(0) scale(var(--cloud-scale, 1));
+  }
+  to {
+    transform: translateX(110vw) scale(var(--cloud-scale, 1));
+  }
+}
+
+.mario-cloud--drift {
+  animation: mario-cloud-drift var(--drift-duration, 75s) steps(60) infinite;
+  transform-origin: top left;
+}
+
+/* --- Sprites (? blocks, bricks, mushroom, goomba) ------------------------
+   Kept crisp via pixelated rendering. Positioning (absolute vs. in-flow flex
+   item) is decided per-use in the markup. */
+.mario-sprite {
+  image-rendering: pixelated;
+}
+
+/* A row of touching blocks forming a floating platform. */
+.mario-platform {
+  position: absolute;
+  align-items: flex-end;
+}
+
+/* Gentle 8-bit bob for floating blocks and the mushroom. */
+@keyframes mario-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.mario-bob {
+  animation: mario-bob 2.6s steps(3) infinite;
+}
+
+/* The mushroom keeps its horizontal centering while it bobs. */
+.mario-platform .mario-bob {
+  animation-name: mario-bob-centered;
+}
+@keyframes mario-bob-centered {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-8px);
+  }
+}
+
+/* Goomba shuffles left and right along the ground. */
+@keyframes mario-goomba-walk {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-160px);
+  }
+}
+.mario-goomba-walk {
+  animation: mario-goomba-walk 7s steps(16) infinite alternate;
+}
+
+/* A second goomba that pops out from behind the far-right bush, ambles left,
+   then turns around and walks back into the bush before repeating. */
+@keyframes mario-goomba-popout {
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  14% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  22% {
+    transform: translateX(72px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-120px);
+    opacity: 1;
+  }
+  78% {
+    transform: translateX(72px);
+    opacity: 1;
+  }
+  86% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+}
+.mario-goomba-popout {
+  animation: mario-goomba-popout 8s steps(26) infinite;
+}
+
+/* --- Game mode ----------------------------------------------------------
+   Interactive Hero overlay: a knocked-block bump plus HUD text styling. */
+@keyframes mario-block-bump {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.mario-block-bump {
+  animation: mario-block-bump 0.28s steps(4);
+}
+
+.mario-game-label {
+  font-family: var(--font-pixel), "Courier New", monospace;
+  font-size: 0.72rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--nes-white);
+  text-shadow: 2px 2px 0 #000;
+}
+
+.mario-game-hint {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--nes-white);
+  text-shadow: 2px 2px 0 #000;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mario-cloud--drift,
+  .mario-bob,
+  .mario-platform .mario-bob,
+  .mario-goomba-walk,
+  .mario-goomba-popout {
+    animation: none !important;
+  }
 }

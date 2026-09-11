@@ -8,6 +8,17 @@ export type ExperienceItem = {
 
 export const experience: ExperienceItem[] = [
   {
+    role: "Software Engineer",
+    org: "SAP",
+    location: "Newtown Square, PA",
+    dates: "May 2026 – Present",
+    bullets: [
+      "Built an internal data analysis tool using SAP technologies to process 100k+ rows of CSV datasets, reducing analysis time by 28%",
+      "Collaborated with team members and clients to identify and translate business needs into technical solutions and reusable functionality",
+      "Leveraged LLM prompting and Gen AI tools throughout development to optimize a data-processing workflow capable of analyzing 30 MB+ datatsets in under 10 seconds",
+    ],
+  },
+  {
     role: "Research Team Leader",
     org: "Temple University — HCI Research",
     location: "Philadelphia, PA",
@@ -18,6 +29,19 @@ export const experience: ExperienceItem[] = [
       "Lead weekly studio discussions to review progress and give research feedback",
     ],
   },
+
+  {
+    role: "Temple Men's Club Soccer President",
+    org: "Temple University",
+    location: "Philadelphia, PA",
+    dates: "May 2026 – Present",
+    bullets: [
+      "Lead and coach a 25-player competitive club soccer team overseeing operations, player development, practices, and match preparation",
+      "Manage a $15,000 annual budget, allocating funds across league + player dues, travel equiptment, tournaments, and raise $2,000+ through fundraisers",
+      "",
+    ],
+  },
+
   {
     role: "Logistics Team Leader",
     org: "Temple University — OwlHacks",
@@ -80,6 +104,11 @@ export type Award = {
 };
 
 export const awards: Award[] = [
+  {
+    title: "SAP's STAR Hackathon Winner",
+    org: "SAP",
+    date: "August 2026",
+  },
   {
     title: "Dean's List",
     org: "Temple University",

@@ -23,15 +23,15 @@ export function About() {
 
         <div className="space-y-4 text-base leading-relaxed text-[color:var(--color-muted)]">
           <p>
-            I&apos;m a Computer Science major and Data Science minor in the
-            Honors Program at Temple University, based in Philadelphia. I
+            I'm a Computer Science major in the
+            Honors Program at Temple University. I
             expect to graduate in May 2028.
           </p>
           <p>
             I lead a Human-Computer Interaction research team studying user
             interfaces for Generative AI applications, focused on accessibility
-            and usability. I also help run OwlHacks and Temple&apos;s ACM
-            chapter, and play for the Men&apos;s Club Soccer team.
+            and usability. I also help run OwlHacks and Temple's ACM
+            club, and play for the Men's Club Soccer team.
           </p>
           <p>
             I&apos;m looking for software engineering internships where I can

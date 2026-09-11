@@ -38,7 +38,7 @@ export const experience: ExperienceItem[] = [
     bullets: [
       "Lead and coach a 25-player competitive club soccer team overseeing operations, player development, practices, and match preparation",
       "Manage a $15,000 annual budget, allocating funds across league + player dues, travel equiptment, tournaments, and raise $2,000+ through fundraisers",
-      "",
+      "Represent the club as the primary liason with league directors and opposing teams, coordingating match logistics, league rules, and team participation",
     ],
   },
 

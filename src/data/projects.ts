@@ -1,6 +1,6 @@
 export type Project = {
   title: string;
-  slug: string;
+  //slug: string;
   description: string;
   tech: string[];
   github?: string;
@@ -8,4 +8,6 @@ export type Project = {
   featured?: boolean;
 };
 
-export const projects: Project[] = [];
+export const projects: Project[] = [
+
+];
